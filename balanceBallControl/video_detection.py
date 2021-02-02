@@ -6,8 +6,17 @@ import cv2
 cap = cv2.VideoCapture(0)
 
 # color range
+<<<<<<< HEAD:video_detection.py
 lower_range = np.array([117, 0, 216])
 upper_range = np.array([179, 255, 255])
+=======
+# lower_range = np.array([117, 0, 216])
+# upper_range = np.array([179, 255, 255])
+with load('hsv_value.npy') as data:
+    lower_range = data[0]
+    upper_range = data[1]
+
+>>>>>>> 5f3a417d346dcd380de4a6505e6a740a4c920708:balanceBallControl/video_detection.py
 # ball countour area
 max_area = 6000
 # arduino serial port
