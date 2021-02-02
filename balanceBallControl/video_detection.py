@@ -1,8 +1,9 @@
 import numpy as np
-import imutils
+import serial
 import cv2
 
-cap = cv2.VideoCapture('data/test_video_2.mp4')
+# cap = cv2.VideoCapture('data/test_video_2.mp4')
+cap = cv2.VideoCapture(0)
 
 # color range
 # lower_range = np.array([117, 0, 216])
@@ -13,6 +14,9 @@ with load('hsv_value.npy') as data:
 
 # ball countour area
 max_area = 6000
+# arduino serial port
+port = 'COM3'
+serial_comm = serial.Serial(port, 9600, timeout = 1)
 
 while(cap.isOpened()):
     ret, frame = cap.read()
@@ -32,6 +36,7 @@ while(cap.isOpened()):
 
         if cv2.contourArea(c) < max_area:
             print('The ball is not on the plate \n')
+            coordinates = 'null'
         
         else:
             # draw the biggest contour (c) in green
@@ -44,8 +49,13 @@ while(cap.isOpened()):
             cv2.circle(frame, (cX, cY), 7, (255, 255, 255), -1)
             cv2.putText(frame, "center", (cX-20,cY-20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(255,255,255),2)
 
+            print('Coordinates:')
             print('cX: ', cX)
             print('cY: ', cY, '\n')
+
+            coordinates = str(cX) + ',' + str(cY)
+        
+        serial_comm.write(coordinates.encode())
 
     cv2.imshow('Original video', frame)
     # cv2.imshow('Mask detection', mask)
@@ -53,5 +63,6 @@ while(cap.isOpened()):
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
+serialcomm.close()
 cap.release()
 cv2.destroyAllWindows()
