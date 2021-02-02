@@ -5,8 +5,11 @@ import cv2
 cap = cv2.VideoCapture('data/test_video_2.mp4')
 
 # color range
-lower_range = np.array([117, 0, 216])
-upper_range = np.array([179, 255, 255])
+# lower_range = np.array([117, 0, 216])
+# upper_range = np.array([179, 255, 255])
+with load('hsv_value.npy') as data:
+    lower_range = data[0]
+    upper_range = data[1]
 
 # ball countour area
 max_area = 6000
