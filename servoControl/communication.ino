@@ -1,46 +1,21 @@
 // Example 2 - Receive with an end-marker
 
 const byte numChars = 32;
-char receivedChars[numChars];   // an array to store the received data
+String receivedCoordinates = "hello";
 
-boolean newData = false;
-
-void setup() {
-    Serial.begin(9600);
-    Serial.println("<Arduino is ready>");
-}
-
-void recvWithEndMarker() {
-    static byte ndx = 0;
-    char endMarker = '\n';
-    char rc;
-   
-    while (Serial.available() > 0 && newData == false) {
-        rc = Serial.read();
-
-        if (rc != endMarker) {
-            receivedChars[ndx] = rc;
-            ndx++;
-            if (ndx >= numChars) {
-                ndx = numChars - 1;
-            }
-        }
-        else {
-            receivedChars[ndx] = '\0'; // terminate the string
-            ndx = 0;
-            newData = true;
-        }
+void receiveCoord() {
+    if (Serial.available() >0) {
+        receivedCoordinates = Serial.readStringUntil('\n');
     }
+    int position_comma = receivedCoordinates.indexOf(',');
+    coordX = receivedCoordinates.substring(0, position_comma).toInt();
+    coordY = receivedCoordinates.substring(position_comma + 1).toInt();
 }
 
 void showNewData() {
-    if (newData == true) {
-        Serial.print("This just in ... ");
-        Serial.println(receivedChars);
-        newData = false;
-    }
-    if(receivedChars[0] == 9){
+    if(coordY == 999){
       digitalWrite(13, HIGH);
+      coordY++;
       delay(1000);
       digitalWrite(13, LOW);
     }else{

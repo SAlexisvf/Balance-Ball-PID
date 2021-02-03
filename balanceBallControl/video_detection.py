@@ -6,17 +6,19 @@ import cv2
 cap = cv2.VideoCapture(0)
 
 # color range
-# lower_range = np.array([117, 0, 216])
-# upper_range = np.array([179, 255, 255])
-with load('hsv_value.npy') as data:
-    lower_range = data[0]
-    upper_range = data[1]
+# lower_range = np.array([63, 160, 7])
+# upper_range = np.array([126, 255, 212])
+hsv_value = np.load('../data/hsv_value.npy')
+lower_range = hsv_value[0]
+upper_range = hsv_value[1]
+
+center = np.load('../data/center.npy')
 
 # ball countour area
-max_area = 6000
+max_area = 1000
 # arduino serial port
 port = 'COM3'
-serial_comm = serial.Serial(port, 9600, timeout = 1)
+# serial_comm = serial.Serial(port, 9600, timeout = 1)
 
 while(cap.isOpened()):
     ret, frame = cap.read()
@@ -33,6 +35,7 @@ while(cap.isOpened()):
         # find the biggest countour (c) by the area
         c = max(contours, key = cv2.contourArea)
         x,y,w,h = cv2.boundingRect(c)
+        # print(cv2.contourArea(c))
 
         if cv2.contourArea(c) < max_area:
             print('The ball is not on the plate \n')
@@ -53,9 +56,9 @@ while(cap.isOpened()):
             print('cX: ', cX)
             print('cY: ', cY, '\n')
 
-            coordinates = str(cX) + ',' + str(cY)
+            coordinates = str(cX-center[0]) + ',' + str(cY-center[1])
         
-        serial_comm.write(coordinates.encode())
+        # serial_comm.write(coordinates.encode())
 
     cv2.imshow('Original video', frame)
     # cv2.imshow('Mask detection', mask)
@@ -63,6 +66,6 @@ while(cap.isOpened()):
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-serialcomm.close()
+# serialcomm.close()
 cap.release()
 cv2.destroyAllWindows()

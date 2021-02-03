@@ -7,7 +7,7 @@ def nothing(x):
     pass
 
 # Initializing the webcam feed.
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(0)
 # cap = cv2.imread("data/test_image_1.jpeg")
 cap.set(3,1280)
 cap.set(4,720)
@@ -19,7 +19,12 @@ def mouseHSV(event,x,y,flags,param):
         print("HSV Format: ", colors)
         print("Coordinates of pixel: X: ",x,"Y: ",y)
 
-# Create a window named trackbars.
+def mouseClickCenter(event,x,y,flags,param):
+    if event == cv2.EVENT_LBUTTONDOWN: #checks mouse left button down condition
+        global center
+        center = [x, y]
+
+# Create windows
 cv2.namedWindow("Trackbars")
 cv2.namedWindow("Original")
 cv2.namedWindow("Filter")
@@ -36,10 +41,11 @@ cv2.createTrackbar("S", "Trackbars", 0, 100, nothing)
 cv2.createTrackbar("V", "Trackbars", 0, 100, nothing)
 
 colors = [0, 0, 0]
+center = [0, 0]
  
 while True:
     # Start reading the webcam feed frame by frame.
-    ret, origina_frame = cap.read()
+    ret, original_frame = cap.read()
     if not ret:
         break
 
@@ -47,10 +53,10 @@ while True:
     scale_percent = 50
 
     #calculate the 50 percent of original dimensions
-    width = int(origina_frame.shape[1] * scale_percent / 100)
-    height = int(origina_frame.shape[0] * scale_percent / 100)
+    width = int(original_frame.shape[1] * scale_percent / 100)
+    height = int(original_frame.shape[0] * scale_percent / 100)
 
-    frame = cv2.resize(origina_frame, (width, height))
+    frame = cv2.resize(original_frame, (width, height))
 
     # Flip the frame horizontally (Not required)
     frame = cv2.flip( frame, 1 ) 
@@ -101,8 +107,31 @@ while True:
         thearray = [lower_range, upper_range]
         print(thearray)
         # Also save this array as penval.npy
-        np.save('hsv_value', thearray)
+        np.save('../data/hsv_value', thearray)
+        break
+
+cv2.destroyAllWindows()
+
+cv2.namedWindow("Plate")
+cv2.setMouseCallback('Plate', mouseClickCenter)
+print("Click on the center of the plate.")
+while True:
+    # Start reading the webcam feed frame by frame.
+    ret, frame = cap.read()
+    if not ret:
+        break
     
+    frame = cv2.circle(frame, (center[0], center[1]), 20, (0, 255, 0), 2)
+    cv2.imshow('Plate', frame)
+
+    # If the user presses ESC then exit the program
+    key = cv2.waitKey(1)
+    if key == ord('s'):
+        print(center)
+        # Also save this array as penval.npy
+        np.save('../data/center', center)
+        break
+
 # Release the camera & destroy the windows.    
 cap.release()
 cv2.destroyAllWindows()
