@@ -7,10 +7,10 @@ def nothing(x):
     pass
 
 # Initializing the webcam feed.
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 # cap = cv2.imread("data/test_image_1.jpeg")
-cap.set(3,1280)
-cap.set(4,720)
+# cap.set(3,1280)
+# cap.set(4,720)
 
 def mouseHSV(event,x,y,flags,param):
     if event == cv2.EVENT_LBUTTONDOWN: #checks mouse left button down condition
@@ -121,7 +121,7 @@ while True:
     if not ret:
         break
     
-    frame = cv2.circle(frame, (center[0], center[1]), 20, (0, 255, 0), 2)
+    frame = cv2.circle(frame, (center[0], center[1]), 10, (0, 255, 0), 2)
     cv2.imshow('Plate', frame)
 
     # If the user presses ESC then exit the program
