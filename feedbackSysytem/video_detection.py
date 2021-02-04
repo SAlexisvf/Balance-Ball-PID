@@ -15,7 +15,7 @@ upper_range = hsv_value[1]
 center = np.load('../data/center.npy')
 
 # ball countour area
-max_area = 1000
+max_area = 600
 # arduino serial port
 port = 'COM4'
 serial_comm = serial.Serial(port, 115200, timeout = 1)
@@ -51,7 +51,7 @@ while (cap.isOpened()):
             # cv2.line(frame, (cX, cY), (center[0], center[1]), (0, 255, 0), 2)
             # cv2.putText(frame, "center", (cX-20,cY-20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(255,255,255),2)
 
-            coordinates = str(cX-center[0]) + ',' + str(cY-center[1]) + '>'
+            coordinates = str(cX-center[0]) + ',' + str(center[1]-cY) + '>'
     # cv2.imshow('Original video', frame)
     # # cv2.imshow('Mask detection', mask)
 
