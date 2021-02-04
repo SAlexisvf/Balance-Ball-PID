@@ -1,8 +1,8 @@
 #include <PID_v1.h>
 #include <Servo.h>
 
-double coordY = 0;
-double coordX = 0;
+int coordY = 0;
+int coordX = 0;
 
 int tolerance = 2;
 
@@ -18,17 +18,19 @@ Servo servo2; //Y axis
 int Ts = 50; 
 unsigned long Stable=0;
 //PID const
-float Kp = 0.6;                                                     
-float Ki = 0.03;                                                      
-float Kd = 0.13;
+float Kp = 2;                                                     
+float Ki = 0.1;                                                      
+float Kd = 0.3;
 
-float Kp1 = 0.6;                                                       
-float Ki1 = 0.08;                                                      
+float Kp1 = 2;                                                       
+float Ki1 = 0.1;                                                      
 float Kd1 = 0.13;
 
+double xx, yy;
+
 //INIT PID
-PID myPID(&coordX, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
-PID myPID1(&coordY, &Output1, &Setpoint1,Kp1,Ki1,Kd1, DIRECT);
+PID myPID(&xx, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
+PID myPID1(&yy, &Output1, &Setpoint1,Kp1,Ki1,Kd1, DIRECT);
 
 
 void setup() {
@@ -51,7 +53,7 @@ void setup() {
   //Zapnutie PID
   // Servos move from 50° to 130°; balance = 90°
   myPID.SetMode(AUTOMATIC);
-  myPID.SetOutputLimits(45, 135);
+  myPID.SetOutputLimits(45, 150);
   myPID1.SetMode(AUTOMATIC);
   myPID1.SetOutputLimits(45, 135);
   // TIME SAMPLE
@@ -62,5 +64,19 @@ void setup() {
 }
 
 void loop() {
-  pidControl();
+  // pidControl();
+  receiveCoord();
+  showNewData();
+  if(abs(coordX) > tolerance){
+    Output = map(coordX, -270, 270, 180, 45);
+    servo1.write(Output);
+  }else{
+    servo1.write(90);
+  }
+  if(abs(coordY) > tolerance){
+    Output = map(coordY, -240, 210, 130, 45);
+    servo2.write(Output);
+  }else{
+    servo1.write(90);
+  }
 }

@@ -22,7 +22,7 @@ void pidControl()
  while(Stable>=125)//if is stable
  { //still measure actual postiion
     receiveCoord();
-    if(abs(coordX)>Setpoint+tolerance && abs(coordY)>Setpoint1+tolerance) //if ball isnt close to setpoint
+    if(abs(coordX)>Setpoint+tolerance || abs(coordY)>Setpoint1+tolerance) //if ball isnt close to setpoint
     {
       digitalWrite(13,LOW);
       Stable=0; //change STABLE state

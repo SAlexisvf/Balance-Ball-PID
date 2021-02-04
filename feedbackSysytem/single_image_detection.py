@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-img = cv2.imread('images/test_image_1.jpeg')
+img = cv2.imread('../data/test_image_1.jpeg')
 hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
 # color range
