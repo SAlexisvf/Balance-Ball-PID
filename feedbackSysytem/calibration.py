@@ -27,7 +27,7 @@ def mouseClickCenter(event,x,y,flags,param):
 # Create windows
 cv2.namedWindow("Trackbars")
 cv2.namedWindow("Original")
-cv2.namedWindow("Filter")
+
 
 # Create mouse callback
 cv2.setMouseCallback('Original', mouseHSV)
@@ -50,7 +50,7 @@ while True:
         break
 
     #percent by which the image is resized
-    scale_percent = 50
+    scale_percent = 60
 
     #calculate the 50 percent of original dimensions
     width = int(original_frame.shape[1] * scale_percent / 100)
@@ -90,12 +90,10 @@ while True:
     mask_3 = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
     
     # # stack the mask, orginal frame and the filtered result
-    # stacked = np.hstack((mask_3,res))
-    
-    # Show this stacked frame at 40% of the size.
+    stacked = np.hstack((frame, mask_3))
     # cv2.imshow('Trackbars', )
-    cv2.imshow('Original', frame)
-    cv2.imshow('Filter', cv2.resize(mask_3, None, fx=0.4, fy=0.4))
+    cv2.imshow('Original', stacked)
+    # cv2.imshow('Filter', mask_3)
     
     # If the user presses ESC then exit the program
     key = cv2.waitKey(1)
