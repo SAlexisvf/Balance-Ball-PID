@@ -1,5 +1,3 @@
-// Example 2 - Receive with an end-marker
-
 const byte numChars = 32;
 String receivedCoordinates = "hello";
 
@@ -10,10 +8,6 @@ void receiveCoord() {
       coordX = receivedCoordinates.substring(0, position_comma).toInt();
       coordY = receivedCoordinates.substring(position_comma + 1, receivedCoordinates.length()-2).toInt();
     }
-//    else{
-//      coordX=0;
-//      coordY=0;
-//    }
 }
 
 void showNewData() {
