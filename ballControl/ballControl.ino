@@ -64,19 +64,5 @@ void setup() {
 }
 
 void loop() {
-  // pidControl();
-  receiveCoord();
-  showNewData();
-  if(abs(coordX) > tolerance){
-    Output = map(coordX, -270, 270, 180, 45);
-    servo1.write(Output);
-  }else{
-    servo1.write(90);
-  }
-  if(abs(coordY) > tolerance){
-    Output = map(coordY, -240, 210, 130, 45);
-    servo2.write(Output);
-  }else{
-    servo1.write(90);
-  }
+  pidControl();
 }

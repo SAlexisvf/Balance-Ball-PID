@@ -7,8 +7,8 @@ def nothing(x):
     pass
 
 # Initializing the webcam feed.
-# cap = cv2.VideoCapture(2)
-cap = cv2.imread("../data/test_image_2.png")
+cap = cv2.VideoCapture(2)
+# cap = cv2.imread("data/test_image_1.jpeg")
 # cap.set(3,1280)
 # cap.set(4,720)
 
@@ -28,7 +28,6 @@ def mouseClickCenter(event,x,y,flags,param):
 cv2.namedWindow("Trackbars")
 cv2.namedWindow("Original")
 
-
 # Create mouse callback
 cv2.setMouseCallback('Original', mouseHSV)
 
@@ -45,14 +44,12 @@ center = [0, 0]
  
 while True:
     # Start reading the webcam feed frame by frame.
-    # ret, original_frame = cap.read()
-    # if not ret:
-    #     break
-
-    original_frame = cap
+    ret, original_frame = cap.read()
+    if not ret:
+        break
 
     #percent by which the image is resized
-    scale_percent = 40
+    scale_percent = 60
 
     #calculate the 50 percent of original dimensions
     width = int(original_frame.shape[1] * scale_percent / 100)
@@ -117,11 +114,9 @@ cv2.setMouseCallback('Plate', mouseClickCenter)
 print("Click on the center of the plate.")
 while True:
     # Start reading the webcam feed frame by frame.
-    # ret, frame = cap.read()
-    # if not ret:
-    #     break
-
-    frame = cap
+    ret, frame = cap.read()
+    if not ret:
+        break
     
     frame = cv2.circle(frame, (center[0], center[1]), 10, (0, 255, 0), 2)
     cv2.imshow('Plate', frame)

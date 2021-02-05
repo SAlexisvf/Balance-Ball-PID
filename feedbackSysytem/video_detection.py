@@ -41,19 +41,19 @@ while (cap.isOpened()):
             coordinates = "0,0>"
         else:
             # draw the biggest contour (c) in green
-            # cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),2)
+            cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),2)
 
             M = cv2.moments(c)
             cX = int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
             
-            # cv2.circle(frame, (cX, cY), 7, (255, 255, 255), -1)
-            # cv2.line(frame, (cX, cY), (center[0], center[1]), (0, 255, 0), 2)
-            # cv2.putText(frame, "center", (cX-20,cY-20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(255,255,255),2)
+            cv2.circle(frame, (cX, cY), 7, (255, 255, 255), -1)
+            cv2.line(frame, (cX, cY), (center[0], center[1]), (0, 255, 0), 2)
+            cv2.putText(frame, "center", (cX-20,cY-20),cv2.FONT_HERSHEY_SIMPLEX,0.5,(255,255,255),2)
 
             coordinates = str(cX-center[0]) + ',' + str(center[1]-cY) + '>'
-    # cv2.imshow('Original video', frame)
-    # # cv2.imshow('Mask detection', mask)
+    cv2.imshow('Original video', frame)
+    # cv2.imshow('Mask detection', mask)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
